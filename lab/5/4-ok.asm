@@ -10,9 +10,9 @@ b segment
     db 1,2,3,4,5,6,7,8
 b ends 
 
-c segment 
-    db 0,0,0,0, 0,0,0,0
-c ends 
+tc segment 
+    db 0,0,0,0,0,0,0,0
+tc ends 
 
 
 code segment
@@ -22,16 +22,16 @@ code segment
     mov ax, b           ; es=b（段地址）
     mov es, ax    
 
-    mov ax, c
+    mov ax, tc
     mov ss, ax          ; ss=c（段地址）感觉不太好?
 
 
     mov bx, 0
     mov cx, 8
 
-    s: mov al 0
+    s: mov al, 0
     add al, ds:[bx]
-    add al, ss:[bx]
+    add al, es:[bx]
     mov ss:[bx], al
     inc bx
     loop s
