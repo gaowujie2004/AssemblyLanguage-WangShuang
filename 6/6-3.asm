@@ -5,11 +5,14 @@
 
 assume cs:code, ss:stack, ds:data ; 伪指令，可有可无，起到补充说明的作用。
 
+
+; 内存段 data 表示，在编译后被替换为一个地址（占位），程序载入内存中，再次被调整
 data segment
     dw 0123h, 0456h, 0789h, 0abch,      0defh, 5555h, 6666h, 7777h
     ; ds:00 ~ ds:0x0f，一共16byte
 data ends
 
+; 内存段 stack 表示，在编译后被替换为一个地址（占位），程序载入内存中，再次被调整
 stack segment
     dw 3333h,3333h,3333h,3333h,      3333h,3333h,3333h,3333h,     3333h,3333h,3333h,3333h,     3333h,3333h,3333h,3333h
     ; ss:0x00 ~ ss:0x1f  一共32byte
