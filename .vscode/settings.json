@@ -1,0 +1,7 @@
+{
+  "blindtiger.masm": true,
+  "xsro.masm-tasm": true,
+  "masmtasm.ASM.assembler": "MASM-v6.11",
+  "editor.formatOnSave": false,
+  "masmtasm.ASM.mode": "single file"
+}
