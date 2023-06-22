@@ -25,7 +25,6 @@ code segment
     mov ax, tc
     mov ss, ax          ; ss=c（段地址）感觉不太好?
 
-
     mov bx, 0
     mov cx, 8
 
