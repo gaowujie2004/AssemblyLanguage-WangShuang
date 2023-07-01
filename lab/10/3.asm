@@ -17,7 +17,7 @@ code segment
     mov ds, ax
     mov si, 0
 
-    mov ax, 65536
+    mov ax, 65535
     mov dh, 8
     mov dl, 0
     mov cl, 00000100B
