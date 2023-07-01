@@ -20,7 +20,6 @@ code segment
 
     mov ax, 12345   ; 双字数据的低16位
     mov dx, 56789   ; 双字数据的高16位
-    
     call dtoc
 
     ; 显示参数
