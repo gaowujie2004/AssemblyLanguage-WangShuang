@@ -5,7 +5,9 @@ assume cs:code
 ; 提示：把这些数据放在地址连续的内存单元中，然后使用bx做索引
 
 code segment
-    push ax
+    mov al, 1
+    sub al, 2
+    sub al, 0
 code ends
 
-end 
+end
