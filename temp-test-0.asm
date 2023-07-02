@@ -5,7 +5,10 @@ assume cs:code
 ; 提示：把这些数据放在地址连续的内存单元中，然后使用bx做索引
 
 code segment
-    push ax
+    mov cx, s2 - offset s0   ; (cx)=6   
+    s0: mov ax, 44h
+    s1: mov bx, 55h
+    s2: nop
 code ends
 
 end 
