@@ -24,13 +24,13 @@ code segment
         cld
         rep movsb
         ; 以上do0安装完成
-    _set_interrupt_vector_table
+    _set_interrupt_vector_table:
         ; do0 指令已载入内存空间0000:0200H处
         ; 0号中断处理程序。 内存空间N*4处，存放0号中断处理程序入口地址的偏移地址； 内存空间N*4+2处，存放0号中断处理程序入口的段地址
         mov ax, 0
         mov ds, ax
-        mov ds:[0], 0200H
-        mov ds:[2], 0000H
+        mov word ptr ds:[0], 0200H
+        mov word ptr ds:[2], 0000H
 
         mov ax, 4c00h
         int 21h
