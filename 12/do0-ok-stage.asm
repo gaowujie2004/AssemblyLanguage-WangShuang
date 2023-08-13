@@ -10,16 +10,14 @@ assume cs:code
 code segment
     _install: 
         ; 源
-        
         mov ax, cs 
         mov ds, ax
         mov si, do0
-
         ; 目的
         mov ax, 0
         mov es, ax
         mov di, 0200H
-
+        ; 写入目的位置
         mov cx, offset do0_ok - offset do0
         cld
         rep movsb
@@ -29,8 +27,13 @@ code segment
         ; 0号中断处理程序。 内存空间N*4处，存放0号中断处理程序入口地址的偏移地址； 内存空间N*4+2处，存放0号中断处理程序入口的段地址
         mov ax, 0
         mov ds, ax
-        mov word ptr ds:[0], 0200H
-        mov word ptr ds:[2], 0000H
+        mov word ptr ds:[0], 0200H ; 0号中断处理程序入口地址的 段内偏移地址
+        mov word ptr ds:[2], 0000H ; 0号中断处理程序入口地址的 段地址
+
+        ; int 0h
+        mov ax, 1000H
+        mov bh, 1     ; 被除数（16-bit）/ 除数（8-bit）= 商（AL）、余数（AH）
+        div bh        ; 内中断——0号中断
 
         mov ax, 4c00h
         int 21h
@@ -38,8 +41,7 @@ code segment
 
     do0:
         jmp start
-    data:
-        db 'GWJ: div overflow!!!', 0
+        data: db 'GWJ: div overflow!!!', 0
     start:
         push es
         push ds
@@ -52,26 +54,22 @@ code segment
 
         mov ax, cs
         mov ds, ax
-        mov si, data
+        mov si, 0200h + (offset data - offset do0)  ; 200h 是当前do0程序所在的内存位置的段内起始偏移地址
         mov dh, 12
         mov dl, 30
+        mov cl, 10011000B
     show_str:
         ; 写入目标内存起始地址的——段地址
         mov ax, 0B800H
         mov es, ax
-
-        
         ; 写入目标内存起始地址的——偏移地址
         mov al, 2
         mul dl
         mov di, ax
-
         mov al, 160
         mul dh
-
         add di, ax  ; R*160 + C*2结果在 AX 中，现在放入 di
     
-
        ; 遍历字符串
         mov ah, cl  ; 颜色
         mov ch, 0
@@ -82,17 +80,11 @@ code segment
             
             jcxz ok
 
-            mov es:[di], ax
+            mov es:[di], ax  ; 写入显存
 
             inc si
             add di, 2
             loop each_str   
-    ; 参数：dh=行号（取值范围0~24)
-    ;      dl=列号（0~79）
-    ;      cl=颜色
-    ;      ds:si指向字符串首地址
-    
-
     ok: 
         pop dx
         pop cx
@@ -102,11 +94,7 @@ code segment
         pop di 
         pop ds
         pop es
-
-        
-        ; 返回到操作系统中（MS-DOS）
-        mov ax, 4c00h
-        int 21h
+        iret ;回到中断前的执行点
     do0_ok: 
         nop
 
