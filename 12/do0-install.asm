@@ -18,7 +18,7 @@ code segment
         mov es, ax
         mov di, 0200H
 
-        mov cx, do0_ok - offset do0
+        mov cx, offset do0_ok - offset do0
         cld
         rep movsb
 
