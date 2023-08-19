@@ -6,7 +6,7 @@ code segment
         ; 安装 -> 0000:0200h 处，
         mov ax, cs
         mov ds ,ax     ; 数据源 ds:si
-        mov si, offset show_str
+        mov si, show_str   ; offset show_str 是一样的。
 
         mov ax, 0 
         mov es, ax                ; 数据目的 es:di
