@@ -9,6 +9,7 @@
 
 assume cs:code
 
+; 要显示字符串的数据区域
 data segment
     db 256 dup(0)
 data ends
