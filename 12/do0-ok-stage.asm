@@ -54,7 +54,7 @@ code segment
 
         mov ax, cs
         mov ds, ax
-        mov si, 0200h + (offset data - offset do0)  ; 200h 是当前do0程序所在的内存位置的段内起始偏移地址
+        mov si, 0200h + (offset data - offset do0)  ; 200h 是当前do0程序所在的内存位置的段内起始偏移地址; 这段代码很牛逼。【Good】
         mov dh, 12
         mov dl, 30
         mov cl, 10011000B
