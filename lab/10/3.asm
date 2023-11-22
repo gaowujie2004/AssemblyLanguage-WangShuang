@@ -1,4 +1,4 @@
-; 任务: 将机器数（二进制）转为十进制字符串
+; 任务: 将机器数（二进制）转为十进制字符串显示
 ; 名称: dtoc
     ; 功能: 将 word 型数据转为十进制数的字符串，字符串结尾是0
     ; 参数: ax = word型数据
@@ -8,6 +8,7 @@
 
 assume cs:code
 
+; 存放数字转为字符串的ascii码
 data segment
     db 256 dup(0)
 data ends
@@ -42,9 +43,9 @@ code segment
         each_num:
             div bx; AX商、DX余数
 
-            ; 处理除数，即个位、百位、.....
-            add dx, 30h
-            push dx
+            ; 处理余数，即个位、百位、.....
+            add dx, 30h  ; 变为ascii码
+            push dx 
 
             mov cx, ax
             inc cx
@@ -56,7 +57,7 @@ code segment
         mov cx, di
         each_en:
             pop ax
-            mov ds:[si + bx], al
+            mov ds:[si][bx], al ;mov ds:[si+bx], al
             inc bx
             loop each_en
         ; 字符串结尾0
