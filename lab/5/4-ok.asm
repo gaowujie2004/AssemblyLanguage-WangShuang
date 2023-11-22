@@ -40,5 +40,25 @@ code segment
 
 code ends 
 
+code segment
+    ;ss、a内存区域的段地址
+    mov ax, a
+    mov ss, ax 
+    ;ds、b内存区域的段地址
+    mov ax, b
+    mov ds, ax
+    ;es目标内存区域的段地址
+    mov ax, tc
+    mov es,ax 
+
+    mov cx, 7
+    mov di, 0
+    foreach:
+        mov al, ss:[di]
+        add al, ds:[di]
+        mov es:[di],al
+        inc di
+        loop foreach
+code ends 
 
 end start

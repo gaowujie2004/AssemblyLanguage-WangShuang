@@ -24,7 +24,7 @@ code segment
     mov sp, 0010h
 
 
-    mov cx, 8
+    mov cx, 7
     mov bx, 0
     s: push ds:[bx]
     add bx, 2
