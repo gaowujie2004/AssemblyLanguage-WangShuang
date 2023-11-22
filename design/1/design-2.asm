@@ -76,6 +76,10 @@ codesg segment
         add di, 10h
     loop fori
 
+    mov ax, 4c00h
+    int 21h
+
+    
     ; 将双字数字转为字符串，字符串首地址在 ds:si
     ; mov ax, 12345   ; 双字数据的低16位
     ; mov dx, 56789   ; 双字数据的高16位
@@ -86,12 +90,6 @@ codesg segment
     ; mov dl, 0
     ; mov cl, 00000100B
     ; call show_str
-
-
-    mov ax, 4c00h
-    int 21h
-
-
     dtoc:
         push ax
         push bx
