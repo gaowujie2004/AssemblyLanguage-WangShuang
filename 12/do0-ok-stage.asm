@@ -94,6 +94,12 @@ code segment
         pop di 
         pop ds
         pop es
+
+        ; 这样可返回到 div 指令的下一条指令。div xx 指令长度=2byte
+        ; push bp
+        ; mov bp, sp
+        ; add ss:[bp + 2], 2
+        ; pop bp
         iret ;回到中断前的执行点
     do0_ok: 
         nop
