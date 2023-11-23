@@ -200,6 +200,7 @@ codesg segment
         push di
         push si
 
+        ;年字段——00h、年收入——05h、员工人数——0Ah、人均工资收入——0Dh
         mov cx, 21
         mov ax, es
         mov ds, ax
@@ -212,46 +213,44 @@ codesg segment
             mov si, bx
             mov ax, di
             mov dh, al
-            mov dl, 05h
-            mov cl, 01000111B
+            mov dl, 00h
+            mov cl, 00000111B
             call show_str
-                ;8个空格
-                ; call show_space
+            mov dl, 00h + 04h
+            call show_space
 
             ; ; field：年收:入
-            ; mov ax, bx
-            ; add ax, 13 
-            ; mov si, ax
-            ; mov ax, di
-            ; mov dh, al
-            ; mov dl, 13+4
-            ; call show_str
-            ;     ;8个空格
-            ;     call show_space
+            mov ax, bx
+            add ax, 5 
+            mov si, ax
+            mov ax, di
+            mov dh, al
+            mov dl, 12
+            call show_str
+            mov dl, 16
+            call show_space
 
 
             ; ; field：员工
-            ; mov ax, bx
-            ; add ax, 26
-            ; mov si, ax
-            ; mov ax, di
-            ; mov dh, al
-            ; mov dl, 26+4
-            ; call show_str
-            ;     ;8个空格
-            ;     call show_space
+            mov ax, bx
+            add ax, 10
+            mov si, ax
+            mov ax, di
+            mov dh, al
+            mov dl, 24
+            call show_str
+            mov dl, 26
+            call show_space
 
 
             ; ; field：人均收入
-            ; mov ax, bx
-            ; add ax, 34
-            ; mov si, ax
-            ; mov ax, di
-            ; mov dh, al
-            ; mov dl, 34+4
-            ; call show_str
-            ;     ;8个空格
-            ;     call show_space
+            mov ax, bx
+            add ax, 13
+            mov si, ax
+            mov ax, di
+            mov dh, al
+            mov dl, 34
+            call show_str
 
 
 
