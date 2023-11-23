@@ -201,7 +201,7 @@ codesg segment
         push di
         push si
 
-        mov cx, 20
+        mov cx, 21
         mov ax, es
         mov ds, ax
         mov bx, 0   ;偏移量
