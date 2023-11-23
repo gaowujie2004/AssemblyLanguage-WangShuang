@@ -11,8 +11,8 @@ data segment
     dd 2390,8000,16000,24486
     dd 3365,3465,3865,7514 
     dd 9800,9900,9950,10000
-    dd 20000,30000,40000,50000
-    dd 60000 
+    dd 20000,30000,40000,5000
+    dd 2000 
     ; 年公司收入 —— 以上是表示21年公司总收入的21个dword型数据（4byte）
 
     dw 3,7,9,13,28,38,130,220,476,778,1001,1442,2258,2793,4037,5635,8226 
@@ -51,13 +51,15 @@ codesg segment
         mov ax, ds:[0 + bx + 2]
         mov es:[di].02h, ax
 
+        ; TODO——将数字转为字符串这一步省略了。
         ; 年收入字段——低16位
         mov ax, ds:[54h + bx]
         mov es:[di].05h, ax
         ; 年收入字段——高16位
-        mov ax, ds:[54h + bx + 2h]
+        mov ax, 0
         mov es:[di].07h, ax 
 
+        ; TODO——将数字转为字符串这一步省略了。
         ; 员工数量字段
         mov ax, ds:[0a8h + bp]         ; ds:0a8h[bp]
         mov es:[di].0ah, ax
@@ -67,6 +69,7 @@ codesg segment
         mov dx, ds:[54h + bx + 2h]
         div word ptr ds:[0a8h + bp]
 
+        ; TODO——将数字转为字符串这一步省略了。
         ; 员工人均收入
         mov es:[di + 0dh], ax 
 
@@ -83,7 +86,7 @@ codesg segment
     int 21h
 
     
-    ; 将双字数字转为字符串，字符串首地址在 ds:si
+    ; 将双字数字转为字符串，结果：字符串首地址在 es:si
     ; mov ax, 12345   ; 双字数据的低16位
     ; mov dx, 56789   ; 双字数据的高16位
     ; call dtoc
@@ -135,11 +138,11 @@ codesg segment
         mov bx, 0
         reversal_enqueue:
             pop ax
-            mov ds:[si + bx], al
+            mov es:[si + bx], al
             inc bx
             loop reversal_enqueue
         ; 字符串结尾
-        mov byte ptr ds:[si+bx], 00H
+        mov byte ptr es:[si + bx], 00H
 
         pop di
         pop es
