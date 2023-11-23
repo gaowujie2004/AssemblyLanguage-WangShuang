@@ -300,7 +300,7 @@ codesg segment
 
             ;遍历遍历空格
             mov ah, 01000000B
-            mov cx, 7
+            mov cx, 8
             each_str22: 
                 mov al, 20h   ; 空格
                 mov es:[di], ax
