@@ -177,7 +177,6 @@ codesg segment
         each_str: 
             mov al, ds:[si]   ; 当前字符
             mov cl, al
-            inc cx   ; loop会cx--
             
             jcxz ok
 
@@ -185,7 +184,7 @@ codesg segment
 
             inc si
             add di, 2
-            loop each_str
+            jmp each_str
         ok:
             pop cx
             pop ax
