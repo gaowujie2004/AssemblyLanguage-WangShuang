@@ -22,7 +22,7 @@ code segment
     pop ds:[0200h]
     push ds:[9*4+2] ;BIOS-int9 cs
     pop ds:[0202h]
-    _write_ah:
+    _write_ah: ;字符颜色常驻
     mov byte ptr ds:[0204h], 00010000B
 
     _install:
