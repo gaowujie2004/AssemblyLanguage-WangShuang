@@ -68,7 +68,7 @@ code segment
         pushf
         call dword ptr cs:[0200h];  (0000:0200h)==BIOS int9 IP
 
-        cmp bl, 01h
+        cmp bl, 02h
         jne int9_iret        ;不相等
         
         ;按下1，改变屏幕颜色
