@@ -101,6 +101,7 @@ code segment
         ;中断过程：1)获取中断号；2）pushf；3）IF、TF=0；4）push cs、push ip；5）R[IP] <- M[N*4], R[CS] <- M[N*4+2]
         pushf
         ;TF、IF在标志寄存器（16-bit）的第8、9位
+        ;TF、IF设置0可省略，因为中断过程本身就会设置TF、IF=0
         pushf ;标志位（2byte）入栈
         pop ax;标志位数据
         and ah, 11111100B ;高字节低两位是IF、TF
