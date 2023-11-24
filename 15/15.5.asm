@@ -22,9 +22,11 @@ code segment
     pop ds:[0200h]
     push ds:[9*4+2] ;BIOS-int9 cs
     pop ds:[0202h]
+    _write_ah:
+    mov byte ptr ds:[0204h], 00010000B
 
     _install:
-    ;mainProcess: int9安装到0000:0204h
+    ;mainProcess: int9安装到0000:0205h
     ;ds:[si] 数据源
     mov ax, cs
     mov ds, ax
@@ -32,7 +34,7 @@ code segment
     ;es:[di] 目标
     mov ax, 0
     mov es, ax
-    mov di, 0204h
+    mov di, 0205h
     ;长度
     mov cx, offset int9_end - offset int9
     ;传输开始
@@ -43,7 +45,7 @@ code segment
     ; ------------------------------------------------------------- 重点注意 -------------------------------------------------
     ; 若下一行代码被执行完，此时触发了一个键盘中断。那将会发生错误，因为新的int9中断例程的cs还没有写入到中断向量表。因此从一开始写入就要屏蔽可屏蔽中断。
     cli
-    mov word ptr es:[4*9], 0204h 
+    mov word ptr es:[4*9], 0205h 
     mov word ptr es:[4*9+2],0h  
     sti
 
@@ -77,25 +79,14 @@ code segment
         mov di, 0
         mov cx, 2000 ;一页屏幕共2000个字符（25*80）
         mov al, 20h       ;低位是字符ASCII——空格
-        
-        jmp set_ah
-        is_init: db 00h   
-        set_ah: 
-            cmp byte ptr cs:[offset is_init-offset int9], 0 ;是否初始化？
-            je start_init  ;相等则跳转
-            init_ok: 
-                add ah, 00010000B
-                jmp fori
-            start_init: 
-                mov byte ptr cs:[offset is_init-offset int9], 1
-                mov ah, 00010000B
+        mov ah, cs:[0204h]
 
         fori:
-            ; add ah, 00010000B
-            ; mov es:[di], ax
-            ; add di,2
+            mov es:[di], ax
+            add di,2
             nop
             loop fori
+        add byte ptr cs:[0204h], 00010000B
         
         int9_iret: 
         pop ds
