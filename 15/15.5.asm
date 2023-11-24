@@ -82,13 +82,19 @@ code segment
         is_init: db 00h   
         set_ah: 
             cmp byte ptr cs:[offset is_init-offset int9], 0 ;是否初始化？
-            jne init_ok  ;不相等则跳转
-            mov byte ptr cs:[offset is_init-offset int9], 1
-            mov ah, 00010000B
-            init_ok: add ah, 00010000B
+            je start_init  ;相等则跳转
+            init_ok: 
+                add ah, 00010000B
+                jmp fori
+            start_init: 
+                mov byte ptr cs:[offset is_init-offset int9], 1
+                mov ah, 00010000B
+
         fori:
-            mov es:[di], ax
-            add di,2
+            ; add ah, 00010000B
+            ; mov es:[di], ax
+            ; add di,2
+            nop
             loop fori
         
         int9_iret: 
