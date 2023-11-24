@@ -9,6 +9,7 @@ stack ends
 
 
 code segment 
+    _start: 
     ;mainProcess: 初始化栈、数据内存
     mov ax, stack
     mov ss, ax
@@ -101,4 +102,4 @@ code segment
     int9_end: nop
 code ends
 
-end
+end _start

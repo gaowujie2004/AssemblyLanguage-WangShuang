@@ -18,6 +18,7 @@ data segment
 data ends
 
 code segment 
+    _start: 
     ;mainProcess: 初始化栈、数据内存
     mov ax, data
     mov ds, ax
@@ -126,4 +127,4 @@ code segment
         iret 
 code ends
 
-end
+end _start
