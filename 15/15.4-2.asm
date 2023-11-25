@@ -89,7 +89,7 @@ code segment
         pop ax
         ret
 
-    ;mainProcess: 新的int9中断例程
+    ;mainProcess: 新的int9中断例程 —— 按下ESC则改变字符颜色
     int9:
         push ax
         push bx 
