@@ -17,7 +17,8 @@ code segment
         add al, nums[si]  ;add byte ptr al, cs:0[si] 
         inc si
         loop each_add
-    mov sum, ax 
+    mov sum, ax
+    ;mov sum[0], ax也对 
 
 
     mov ax, 4c00h
