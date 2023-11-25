@@ -98,7 +98,7 @@ code segment
         in al, 60h ;键盘扫描码端口寄存器
         mov bl, al;  暂存al键盘扫描码
 
-        ;模拟BIOS的int9例程触发
+        ;模拟BIOS的int9例程触发 —— 为什么？因为还有一些硬件细节需要处理
         ;中断过程：1)获取中断号；2）pushf；3）IF、TF=0；4）push cs、push ip；5）R[IP] <- M[N*4], R[CS] <- M[N*4+2]
         pushf
         ;TF、IF在标志寄存器（16-bit）的第8、9位
