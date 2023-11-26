@@ -36,7 +36,7 @@ code segment
     mov word ptr ds:[1f0h+2], 0
 
     start:
-    mov ah, 0
+    mov ah, 2
     mov al, 1
     int 7ch
 
@@ -51,7 +51,7 @@ code segment
     ;聚合这些零散的函数
     ;参数：ah=功能号（0-3）、al=颜色值
     ;在中断例程中，int7ch处是开始，IP=0200、CS=0
-    int7ch:
+    int7ch: 
         ;al参数校验 0-7
         cmp al, 0
         jb int7ch_ret      ;低于则跳转即al<0
@@ -73,11 +73,12 @@ code segment
         impl:
         push bx
 
+        TABLE_OFFSET EQU 200h+offset table-offset int7ch ;定义常量, 编译时被硬替换掉，所以相关的操作数都要在编译时已知。
         mov bh, 0
         mov bl, ah
         add bx, bx
         ; call word ptr table[bx]   ;cs:[offset table][bx] 也是错的，不能用这种方法了。
-        call word ptr cs:[200h+offset table-offset int7ch + bx]
+        call word ptr cs:[TABLE_OFFSET + bx]
         ;---------------------------------------------------------------- 上面要注意 -------------------------------------------------
 
         pop bx
