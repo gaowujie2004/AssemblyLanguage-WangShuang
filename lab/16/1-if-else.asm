@@ -64,19 +64,18 @@ code segment
         cmp ah, 3
         ja int7ch_ret
 
+        cmp ah, 0
+        je main1
 
-        jmp impl
-        table dw  200h+(offset main1-offset int7ch),   200h+ (offset main2- offset int7ch),   200h+(offset main3-offset int7ch),   200h+(offset main4-offset int7ch)
-        ; TODO 上面要注意
-        impl:
-        push bx
+        cmp ah, 1
+        je main2
 
-        mov bh, 0
-        mov bl, ah
-        add bx, bx
-        call word ptr table[bx]
+        cmp ah, 2
+        je main3
 
-        pop bx
+        cmp ah, 3
+        je main4
+
         int7ch_ret: iret
 
 
@@ -98,7 +97,7 @@ code segment
         pop cx
         pop es
         pop bx 
-        ret
+        iret
     
     ;2号设置前景色，只考虑字符颜色。
     ;参数：al=颜色值（0-7）
@@ -127,7 +126,7 @@ code segment
         pop es
         pop cx
         pop bx
-        main2_ret: ret
+        main2_ret: iret
     
     ;3号设置背景色，只考虑颜色属性
     ;参数: al=颜色值（0-7）
@@ -162,7 +161,7 @@ code segment
         pop cx
         pop bx
         pop ax 
-        main3_ret: ret
+        main3_ret: iret
 
     ;4号向上滚动一行
     main4:
@@ -205,7 +204,7 @@ code segment
         pop es
         pop cx
         pop bx
-        ret
+        iret
         int7ch_end: nop
 code ends
 
