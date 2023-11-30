@@ -123,13 +123,25 @@ code segment
                 
                 each_continue:
                     mov bx, [bp-0ah]
+                    mov cl, in_str[bx][si-1] ;preventtChar
+                    cmp cl, '%'
+                    jne each_continue_normal
+                    ;并且 currentChar='d'或'c'
+                    mov ch, in_str[bx][si]   ;currentChar
+                    cmp ch, 'c'
+                    je each_next
+                    cmp ch, 'd'
+                    je each_next
+
+                    each_continue_normal:
+                    mov bx, [bp-0ah]
                     mov ch, in_str[bx][si] ;currentChar
                     mov di, [bp-06h]        ;out_str偏移字节数  TODO
                     mov out_str[di],  ch
                     inc word ptr [bp-06h]   ;out_str偏移字节数  TODO
                 each_next:
                     inc si                  ;in_str 偏移字节数
-                    jmp short each
+                    jmp each
                 each_end:
                     mov di, [bp-06h]        ;out_str偏移字节数  TODO
                     mov out_str[di], 00h
