@@ -76,9 +76,12 @@ code segment
 
                     push cx
                     mov cx, 0
+                    mov bl, 10
                     get_num:
-                        div 10
-                        push ah  ;余数  ----- TODO 要尽快pop
+                        div bl
+                        mov dh, 0
+                        mov dl, ah
+                        push dx  ;余数  ----- TODO 要尽快pop
                         mov ah, 0
                         inc cx
                         cmp al, 0
@@ -90,7 +93,7 @@ code segment
                         mov di, [bp-06h]     ;out_str偏移字节数
                         pop ax
                         add ax, 30h
-                        mov out_str[di], ax     
+                        mov out_str[di], al
                         inc word ptr [bp-06h]
                         loop pop_num  
                     pop cx
@@ -102,13 +105,22 @@ code segment
                 is_eq_c: cmp ch, 'c'
                 jne each_continue
                 char_eq_c:
-                    inc word ptr [bp-08h]
+                    mov di, [bp-08h];  参数个数
+                    add di, di
+                    mov ax, ss:[bp+06h][di] ;定位到不定形参的第n个参数的值 （从0开始）
+                    ;-------- di 目前是形参的值，从左往右，此时是字符的ASCII码值
+
+                    mov di, [bp-06h]     ;out_str偏移字节数
+                    mov out_str[di], al
+                    
+                    inc word ptr [bp-06h]     ;out_str偏移字节数
+                    inc word ptr [bp-08h]     ;参数个数
                     jmp each_next
                 
                 each_continue:
                     mov di, [bp-06h]        ;out_str偏移字节数  TODO
                     mov ax, ss:[bp-0ah][si]
-                    mov out_str[di],  ax
+                    mov out_str[di],  al
                     inc word ptr [bp-06h]   ;out_str偏移字节数  TODO
                 each_next:
                     inc si                  ;in_str 偏移字节数
