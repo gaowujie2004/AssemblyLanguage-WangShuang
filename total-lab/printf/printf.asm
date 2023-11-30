@@ -20,11 +20,11 @@ code segment
         mov ss, ax
         mov sp, 512
     start:
-        ; printf(offset inStr, 'Q', 24);
+        ;printf(offset inStr, 'Q', 24);
         mov ax, 24
         push ax
 
-        mov ax, 'Q'   ; 为什么不用al？因为push指令已经隐含了数据长度是2byte
+        mov ax, 'Q'   ;为什么不用al？因为push指令已经隐含了数据长度是2byte
         push ax
 
         lea ax, in_str
