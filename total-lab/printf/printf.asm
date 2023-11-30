@@ -2,7 +2,7 @@ assume cs:code, ds:data, ss:stack
 
 
 data segment
-    in_str  db 'GaoWuJie=, age=', 0
+    in_str  db 'GaoWuJie=%c, age=%d', 0
     out_str db 256 dup(0ffh)
 data ends
 
@@ -58,14 +58,18 @@ code segment
             mov word ptr [bp-08h], 0     ;参数个数
             mov word ptr [bp-06h], 0     ;out_str偏移字节数
             each:
-                mov ch, ss:[bp-0ah][si] ;currentChar
+                mov bx, [bp-0ah]
+                mov ch, in_str[bx][si] ;currentChar
+                ; mov ch, ss:[bp-0ah][si] 
                 cmp ch,  0           ;字符串是否循环完毕
                 je each_end 
 
                 cmp ch, '%'
                 jne each_continue                 ;不等于则跳转
                 ;判断下一个字符
-                mov ch, ss:[bp-0ah][si+1]
+                mov bx, [bp-0ah]
+                mov ch, in_str[bx][si+1] ;currentChar
+                ; mov ch, ss:[bp-0ah][si+1]
                 cmp ch, 'd'
                 jne is_eq_c
                 char_eq_d: ;out_str 将printf第n个参数写入到out_str字符区域.
@@ -118,15 +122,34 @@ code segment
                     jmp each_next
                 
                 each_continue:
+                    mov bx, [bp-0ah]
+                    mov ch, in_str[bx][si] ;currentChar
                     mov di, [bp-06h]        ;out_str偏移字节数  TODO
-                    mov ax, ss:[bp-0ah][si]
-                    mov out_str[di],  al
+                    mov out_str[di],  ch
                     inc word ptr [bp-06h]   ;out_str偏移字节数  TODO
                 each_next:
                     inc si                  ;in_str 偏移字节数
                     jmp short each
+                each_end:
+                    mov di, [bp-06h]        ;out_str偏移字节数  TODO
+                    mov out_str[di], 00h
             
-            each_end:
+
+            mov bx, 0b800h
+            mov es, bx
+            mov di, 160*12+80   ;显存偏移字节数
+            mov si, 0           ;in_str 偏移字节数
+            mov ah, 2
+            show_strs:
+                mov al, out_str[si] 
+                cmp al, 0
+                je show_strs_end
+                mov es:[di], ax
+                inc si 
+                add di, 2
+                jmp show_strs
+
+            show_strs_end: 
             mov sp, bp
             pop bp
             ret
