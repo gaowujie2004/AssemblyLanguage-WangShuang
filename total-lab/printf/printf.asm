@@ -127,7 +127,9 @@ code segment
                     jmp short each
             
             each_end:
-                
+            mov sp, bp
+            pop bp
+            ret
 
 
 
